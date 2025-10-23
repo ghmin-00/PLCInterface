@@ -10,25 +10,25 @@ namespace PLCInterface
     {
         public List<PLCData> Items { get; set; }
 
-        public void AddItem(ReadData nameR, string address, object value, bool isRead, PLCDataType dataType)
+        public void AddItem(ReadData nameR, string address, object value, PLCDataType dataType)
         {
             Items.Add(new PLCData
             {
                 ReadDataName = nameR,
                 Address = address,
                 Value = value,
-                IsRead = isRead,
+                IsRead = true,
                 DataType = dataType
             });
         }
-        public void AddItem(WriteData nameW, string address, object value, bool isRead, PLCDataType dataType)
+        public void AddItem(WriteData nameW, string address, object value, PLCDataType dataType)
         {
             Items.Add(new PLCData
             {
                 WriteDataName = nameW,
                 Address = address,
                 Value = value,
-                IsRead = isRead,
+                IsRead = false,
                 DataType = dataType
             });
         }
