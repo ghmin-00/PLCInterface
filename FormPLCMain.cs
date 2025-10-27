@@ -361,7 +361,7 @@ namespace PLCInterface
                 idx++;
             }
 
-            _plcManager.SetMonitoringDeviceList(pairs);
+            //_plcManager.SetMonitoringDeviceList(pairs);
             _plcManager.MonitoringStart();
 
             dgvMonitoring.ReadOnly = true;
