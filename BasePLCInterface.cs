@@ -61,7 +61,7 @@ namespace PLCInterface
 
         private void TimerTickMonitoring(object state)
         {
-            if (!_isMonitoringRunning) return;
+            if (!_isMonitoringRunning || ReadData.Count == 0) return;
 
             int cnt = ReadData.Count;
             string[] devices = new string[cnt];
@@ -78,11 +78,13 @@ namespace PLCInterface
 
             for (int i = 0; i < cnt; i++)
                 ReadData[i].Value = (short)values[i];
+
+            MonitoringValueChanged?.Invoke();
         }
 
         private void TimerTickUpdating(object state)
         {
-            if (!_isUpdatingRunning) return;
+            if (!_isUpdatingRunning || WriteData.Count == 0) return;
 
             int cnt = WriteData.Count;
             string[] devices = new string[cnt];

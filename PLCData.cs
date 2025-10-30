@@ -76,11 +76,12 @@ namespace PLCInterface
             Type type = basePLCDataList.GetType();
             if (type.BaseType != typeof(BasePLCDataList))
                 return null;
-            var fields = type.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+            var fields = type.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
             List<PLCData> listPLCData = new List<PLCData>();
             foreach (var field in fields)
             {
-                listPLCData.Add((PLCData)field.GetValue(null));
+                //listPLCData.Add((PLCData)field.GetValue(null));
+                listPLCData.Add((PLCData)field.GetValue(basePLCDataList));
             }
             return listPLCData;
         }
