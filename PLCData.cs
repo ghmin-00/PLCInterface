@@ -58,6 +58,11 @@ namespace PLCInterface
         }
 
         public override int GetHashCode() => (Name, Address, Value, ValueType, IsRead).GetHashCode();
+
+        public PLCData Clone()
+        {
+            return new PLCData(this.Name, this.Address, this.Value, this.ValueType, this.IsRead);
+        }
     }
 
     /// <summary>
@@ -79,5 +84,10 @@ namespace PLCInterface
             }
             return listPLCData;
         }
+    }
+
+    public abstract class BasePLCDataList2
+    {
+
     }
 }

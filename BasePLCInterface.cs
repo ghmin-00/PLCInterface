@@ -15,10 +15,10 @@ namespace PLCInterface
 {
     /// <summary>
     /// 이 클래스는 무조건 상속 받아서 사용
-    /// PLC와 기본적으로 통신 하는 기능은 PLCManager 클래스에 구현
+    /// PLC와 기본적으로 통신 하는 기능은 PLCInterface 클래스에 구현
     /// 이벤트 함수 또는 별도 기능으로 PLC 와 통신하는 코드는 상속받은 자식 클래스에서 구현
     /// </summary>
-    public class PLCManager
+    public class BasePLCInterface
     {
         private Timer _timerMonitoring;
         private Timer _timerUpdating;
@@ -26,25 +26,19 @@ namespace PLCInterface
         private bool _isUpdatingRunning = false;
         public bool IsMonitoringRunning { get { return _isMonitoringRunning; } }
         public bool IsUpdatingRunning { get { return _isUpdatingRunning; } }
-        //private Dictionary<string, short> _monitoringPairs;
-        //private Dictionary<string, short> _updatingPairs;
 
 
         public event Action MonitoringValueChanged;
 
         public IPLC PLC { get; set; }
-        //public PLCAddressMap PLCAddressMap { get; set; }
-        //public List<PLCData> PLCDataList { get; set; }
 
         public List<PLCData> ReadData { get; set; }
         public List<PLCData> WriteData { get; set; }
 
         public int Interval { get; set; }
 
-        private string DataListType = "PLCAddressMap"; // PLCAddressMap | PLCDataList
-
         #region PLCManager 기본 기능
-        public PLCManager()
+        public BasePLCInterface()
         {
             Interval = 100;
         }
@@ -53,15 +47,12 @@ namespace PLCInterface
         {
             if (PLC == null) return;
 
-            //    _monitoringPairs = new Dictionary<string, short>(PLCAddressMap.MonitoringAddressValue);
-            //    _updatingPairs = new Dictionary<string, short>(PLCAddressMap.UpdatingAddressValue);
-
             List<PLCData> AllData = BasePLCDataList.GetPLCDataList(basePLCDataList);
             if (AllData == null) return;
 
-            ReadData = new List<PLCData>();
+            ReadData = [];
             ReadData = AllData.FindAll(x => x.IsRead);
-            WriteData = new List<PLCData>();
+            WriteData = [];
             WriteData = AllData.FindAll(x => !x.IsRead);
 
             _timerMonitoring = new Timer(TimerTickMonitoring, null, 0, Interval);
@@ -70,16 +61,6 @@ namespace PLCInterface
 
         private void TimerTickMonitoring(object state)
         {
-            //Dictionary<string, short> tempPairs = new Dictionary<string, short>(_monitoringPairs);
-            //if (_isMonitoringRunning)
-            //{
-            //    Dictionary<string, short> result = MonitoringSingleTick(tempPairs);
-            //    if (result != null)
-            //    {
-            //        _monitoringPairs = new Dictionary<string, short>(result);
-            //        MonitoringValueChanged?.Invoke();
-            //    }
-            //}
             if (!_isMonitoringRunning) return;
 
             int cnt = ReadData.Count;
@@ -101,10 +82,6 @@ namespace PLCInterface
 
         private void TimerTickUpdating(object state)
         {
-            //if (_isUpdatingRunning)
-            //{
-            //    UpdatingSingleTick(_updatingPairs);
-            //}
             if (!_isUpdatingRunning) return;
 
             int cnt = WriteData.Count;
@@ -314,11 +291,22 @@ namespace PLCInterface
         //}
         //#endregion
 
+        /// <summary>
+        /// low word + high word -> double word value retrun
+        /// </summary>
+        /// <param name="lowWord"></param>
+        /// <param name="highWord"></param>
+        /// <returns></returns>
         public static int GetDoubleWordValue(PLCData lowWord, PLCData highWord)
         {
             short low = Convert.ToInt16(lowWord.Value);
             short high = Convert.ToInt16(highWord.Value);
             return ((high & 0xFFFF) << 16) | (low & 0xFFFF);
+        }
+
+        public (short lowValue, short highValue) GetHighLowWordValue(int dWordValeu)
+        {
+            return (0, 0);
         }
     }
 }
