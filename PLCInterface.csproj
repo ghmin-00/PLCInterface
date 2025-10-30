@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{623C7998-F044-483E-968D-1E95290FB172}</ProjectGuid>
+    <ProjectGuid>{31E932BD-41E7-455A-B2BC-9CF44E283457}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>HiCurve.AxisCamera</RootNamespace>
     <AssemblyName>MithubishiPLC</AssemblyName>
