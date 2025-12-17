@@ -27,11 +27,19 @@ namespace PLCInterface
         public MXComponent(int iLogicalStationNumber)
         {
             _stationNumber = iLogicalStationNumber;
+        }
+
+        public bool Initialize()
+        {
+            if (_actUtlType != null)
+                return true;
 
             _actUtlType = new ActUtlType64Lib.ActUtlType64();
             _actUtlType.ActLogicalStationNumber = _stationNumber;
 
             InitError();
+
+            return true;
         }
 
         private void InitError()
@@ -72,6 +80,7 @@ namespace PLCInterface
 
         public bool Open()
         {
+            if (_actUtlType == null) return false;
             int result = _actUtlType.Open();
             if (result == 0)
             {
@@ -83,6 +92,7 @@ namespace PLCInterface
 
         public bool Close()
         {
+            if (_actUtlType == null) return false;
             int result = _actUtlType.Close();
             if (result == 0)
             {
