@@ -55,6 +55,9 @@ namespace PLCInterface
             CNetError[0x9000] = "Long Word 값을 Int 형으로 받아올 수 없음.";
         }
 
+        public bool Initialize()
+        { return true; }
+
         public bool IsOpen()
         {
             return _serialPort.IsOpen;
