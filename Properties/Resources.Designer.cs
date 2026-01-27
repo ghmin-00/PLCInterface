@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace HiCurve.AxisCamera.Properties {
+namespace HiCurve.VisionInterface.Properties {
     using System;
     
     
