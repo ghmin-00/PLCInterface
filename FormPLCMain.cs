@@ -17,7 +17,7 @@ namespace PLCInterface
     public partial class FormPLCMain : Form
     {
         IPLC _plc;
-        private PLCManager _plcManager;
+        private BasePLCInterface _plcManager;
 
         private Dictionary<string, short> _heatingLineInfo;
         private string[] _deviceName = new string[11];
@@ -160,7 +160,7 @@ namespace PLCInterface
         {
             _plc = e.ReturnedValue;
 
-            _plcManager = new PLCManager();
+            _plcManager = new BasePLCInterface();
             _plcManager.PLC = _plc;
             //_plcManager.MonitoringValueChanged += _plcMonitor_ValueChanged;
         }
@@ -361,7 +361,7 @@ namespace PLCInterface
                 idx++;
             }
 
-            _plcManager.SetMonitoringDeviceList(pairs);
+            //_plcManager.SetMonitoringDeviceList(pairs);
             _plcManager.MonitoringStart();
 
             dgvMonitoring.ReadOnly = true;

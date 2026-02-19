@@ -27,11 +27,19 @@ namespace PLCInterface
         public MXComponent(int iLogicalStationNumber)
         {
             _stationNumber = iLogicalStationNumber;
+        }
+
+        public bool Initialize()
+        {
+            if (_actUtlType != null)
+                return true;
 
             _actUtlType = new ActUtlType64Lib.ActUtlType64();
             _actUtlType.ActLogicalStationNumber = _stationNumber;
 
             InitError();
+
+            return true;
         }
 
         private void InitError()
@@ -72,6 +80,7 @@ namespace PLCInterface
 
         public bool Open()
         {
+            if (_actUtlType == null) return false;
             int result = _actUtlType.Open();
             if (result == 0)
             {
@@ -83,6 +92,7 @@ namespace PLCInterface
 
         public bool Close()
         {
+            if (_actUtlType == null) return false;
             int result = _actUtlType.Close();
             if (result == 0)
             {
@@ -101,6 +111,13 @@ namespace PLCInterface
         {
             oValue = 0;
             oErrCode = _actUtlType.GetDevice(iDevice, out oValue);
+            try
+            {
+            }
+            catch
+            {
+                oErrCode = -1;
+            }
             if (oErrCode == 0) return true;
             return false;
         }
@@ -114,7 +131,14 @@ namespace PLCInterface
             {
                 iDeviceList = iDeviceList + "\n" + iDevices[i];
             }
-            oErrCode = _actUtlType.ReadDeviceRandom(iDeviceList, iDevices.Length, out oValues[0]);
+            try
+            {
+                oErrCode = _actUtlType.ReadDeviceRandom(iDeviceList, iDevices.Length, out oValues[0]);
+            }
+            catch 
+            {
+                oErrCode = -1;
+            }
             if (oErrCode == 0) return true;
             return false;
         }
@@ -123,14 +147,28 @@ namespace PLCInterface
         {
             oValues = new int[iDeviceCount];
             Array.Clear(oValues, 0, iDeviceCount);
-            oErrCode = _actUtlType.ReadDeviceBlock(iStartDevice, iDeviceCount, out oValues[0]);
+            try
+            {
+                oErrCode = _actUtlType.ReadDeviceBlock(iStartDevice, iDeviceCount, out oValues[0]);
+            }
+            catch
+            {
+                oErrCode = -1;
+            }
             if (oErrCode == 0) return true;
             return false;
         }
 
         public bool WriteSingleDevice(string iDevice, int iValue, out int oErrCode)
         {
-            oErrCode = _actUtlType.SetDevice(iDevice, iValue);
+            try
+            {
+                oErrCode = _actUtlType.SetDevice(iDevice, iValue);
+            }
+            catch
+            {
+                oErrCode = -1;
+            }
             if (oErrCode == 0) return true;
             return false;
         }
@@ -142,14 +180,28 @@ namespace PLCInterface
             {
                 iDeviceList = iDeviceList + "\n" + iDevices[i];
             }
-            oErrCode = _actUtlType.WriteDeviceRandom(iDeviceList, iDevices.Length, ref iValues[0]);
+            try
+            {
+                oErrCode = _actUtlType.WriteDeviceRandom(iDeviceList, iDevices.Length, ref iValues[0]);
+            }
+            catch
+            {
+                oErrCode = -1;
+            }
             if (oErrCode == 0) return true;
             return false;
         }
 
         public bool WriteContinuousDevices(string iStartDevice, int iDeviceCount, int[] iValues, out int oErrCode)
         {
-            oErrCode = _actUtlType.WriteDeviceBlock(iStartDevice, iDeviceCount, ref iValues[0]);
+            try
+            {
+                oErrCode = _actUtlType.WriteDeviceBlock(iStartDevice, iDeviceCount, ref iValues[0]);
+            }
+            catch
+            {
+                oErrCode = -1;
+            }
             if (oErrCode == 0) return true;
             return false;
         }

@@ -12,6 +12,12 @@ namespace PLCInterface
     public interface IPLC
     {
         /// <summary>
+        /// PLC 통신 객체 초기화
+        /// </summary>
+        /// <returns></returns>
+        bool Initialize();
+
+        /// <summary>
         /// PLC 통신 포트 연결 상태 확인
         /// </summary>
         /// <returns></returns>
